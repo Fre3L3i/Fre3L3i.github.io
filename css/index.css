@@ -145,7 +145,7 @@ hr:before {
 }
 details {
   padding: 0.3rem;
-  border: 2px solid #7f56d4;
+  border: 2px solid #ea2171;
 }
 details summary {
   color: #9370db;
@@ -168,7 +168,7 @@ table thead {
 table th,
 table td {
   padding: 0.3rem 0.6rem;
-  border: 1px solid #7f56d4;
+  border: 1px solid #ea2171;
   vertical-align: top;
 }
 *::selection {
@@ -1429,12 +1429,12 @@ footer {
 }
 #footer {
   padding: 1.2rem 1rem 1rem;
-  color: #9370db;
+  color: #ed3c82;
   text-align: center;
   position: relative;
 }
 #footer a {
-  color: #9370db;
+  color: #ed3c82;
   text-decoration: none;
   cursor: pointer;
 }
@@ -1472,7 +1472,7 @@ footer {
 }
 #nav #site-social-icons .social-icon {
   margin: 0 0.5rem;
-  color: #9370db;
+  color: #ed3c82;
   text-shadow: 0.1rem 0.1rem 0.2rem rgba(0,0,0,0.15);
   font-size: 0.9rem;
   cursor: pointer;
@@ -1487,7 +1487,7 @@ footer {
 }
 #site-title,
 #site-sub-title {
-  color: #9370db;
+  color: #ed3c82;
   text-align: center;
   text-shadow: 0.1rem 0.1rem 0.2rem rgba(0,0,0,0.15);
   line-height: 1.5;
@@ -1534,7 +1534,7 @@ footer {
 #page-header .toggle-menu {
   display: none;
   padding-top: 0.6rem;
-  color: #9370db;
+  color: #ed3c82;
   cursor: pointer;
   -webkit-transition: all 0.2s ease-in-out;
   -moz-transition: all 0.2s ease-in-out;
@@ -1680,7 +1680,7 @@ footer {
   display: none;
 }
 #page-header a {
-  color: #9370db;
+  color: #ed3c82;
   text-decoration: none;
 }
 #page-header a:hover {
@@ -2188,7 +2188,7 @@ footer {
   margin: 10px 0;
   padding: 15px;
   position: relative;
-  border: 1px solid #9370db;
+  border: 1px solid #ed3c82;
   border-left-width: 5px;
   border-radius: 3px;
 }
@@ -2931,7 +2931,7 @@ footer {
   background-image: linear-gradient(234deg, #394245 0%, #000 100%);
 }
 #top-container a {
-  color: #9370db;
+  color: #ed3c82;
   text-decoration: none;
   -webkit-transition: all 0.3s ease-out;
   -moz-transition: all 0.3s ease-out;
@@ -2952,7 +2952,7 @@ footer {
 }
 #top-container #post-info {
   width: 100%;
-  color: #9370db;
+  color: #ed3c82;
   text-align: left;
   padding-left: 8%;
   position: absolute;
@@ -3133,7 +3133,7 @@ img:hover {
   position: relative;
   margin-bottom: 0.4rem;
   padding: 0.5rem 0.8rem;
-  border: 1px solid #9370db;
+  border: 1px solid #ed3c82;
   -webkit-transition: box-shadow 0.3s ease-in-out;
   -moz-transition: box-shadow 0.3s ease-in-out;
   -o-transition: box-shadow 0.3s ease-in-out;
